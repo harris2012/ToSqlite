@@ -61,10 +61,15 @@ namespace ToSqLite.Template
             
             #line default
             #line hidden
-            this.Write(" ");
             
             #line 14 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\CreateSqliteTableTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(sqliteField.IsPrimaryKey?"PRIMARY KEY":string.Empty));
+            this.Write(this.ToStringHelper.ToStringWithCulture(sqliteField.IsPrimaryKey?" PRIMARY KEY":string.Empty));
+            
+            #line default
+            #line hidden
+            
+            #line 14 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\CreateSqliteTableTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sqliteField.IsIdentity?" AUTOINCREMENT":string.Empty));
             
             #line default
             #line hidden

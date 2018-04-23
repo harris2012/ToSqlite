@@ -54,6 +54,7 @@ namespace ToSqLite
                     sqliteField.Name = mssqlField.Name;
                     sqliteField.DataType = GetSqliteFieldType(mssqlField.ColType);
                     sqliteField.IsPrimaryKey = mssqlField.IsPrimaryKey;
+                    sqliteField.IsIdentity = mssqlField.IsIdentity;
 
                     sqliteTable.FieldList.Add(sqliteField);
                 }
@@ -70,7 +71,7 @@ namespace ToSqLite
             {
                 case "int":
                 case "bigint":
-                    return "INT";
+                    return "INTEGER";
                 case "nvarchar":
                     return "VARCHAR";
                 case "datetime":

@@ -17,5 +17,7 @@ namespace ToSqLite.Sqlite
         public bool IsPrimaryKey { get; set; }
 
         public bool IsNotNull { get; set; }
+
+        public bool IsIdentity { get; set; }
     }
 }
