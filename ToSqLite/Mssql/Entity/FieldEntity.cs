@@ -24,11 +24,6 @@ namespace ToSqLite.Mssql.Entity
         public int IsIdentity { get; set; }
 
         /// <summary>
-        /// int
-        /// </summary>
-        public int IsPrimaryKey { get; set; }
-
-        /// <summary>
         /// nvarchar(128)
         /// </summary>
         public string ColType { get; set; }

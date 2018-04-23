@@ -12,9 +12,9 @@ namespace ToSqLite.Mssql
 
         public string Name { get; set; }
 
-        public int IsIdentity { get; set; }
+        public bool IsIdentity { get; set; }
 
-        public int IsPrimaryKey { get; set; }
+        public bool IsPrimaryKey { get; set; }
 
         public string ColType { get; set; }
 

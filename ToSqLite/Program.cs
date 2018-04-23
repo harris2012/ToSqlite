@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ToSqLite.Mssql;
 using ToSqLite.Mssql.Entity;
 using ToSqLite.Sqlite;
+using ToSqLite.Template;
 
 namespace ToSqLite
 {
@@ -14,15 +15,26 @@ namespace ToSqLite
     {
         static void Main(string[] args)
         {
-            var mssqlConnString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\tmp013\TempFile\HarrisBlog.mdf;Integrated Security=True;Connect Timeout=30";
+            List<Table> tableList = MssqlAdapter.GetTableList();
 
-            var sqliteConnString = @"Data Source=D:\HarrisBlog.db3;Version=3";
+            List<SqliteTable> sqliteTableList = ToSqlite(tableList);
+            if (sqliteTableList != null && sqliteTableList.Count > 0)
+            {
+                foreach (var sqliteTable in sqliteTableList)
+                {
+                    var template = new CreateSqliteTableTemplate();
+                    template.SqliteTable = sqliteTable;
 
-            List<Table> tableList = GetTableList(mssqlConnString);
+                    var content = template.TransformText();
 
-            List<SqliteTable> sqliteTable = ToSqlite(tableList);
+                    System.Diagnostics.Debug.WriteLine(content);
 
-            var x = 0;
+                    using (var sqliteConn = ConnectionProvider.GetSqliteConn())
+                    {
+                        SqliteExecutor.Execute(content, sqliteConn);
+                    }
+                }
+            }
         }
 
         private static List<SqliteTable> ToSqlite(List<Table> tableList)
@@ -40,6 +52,8 @@ namespace ToSqLite
                     SqLiteField sqliteField = new SqLiteField();
 
                     sqliteField.Name = mssqlField.Name;
+                    sqliteField.DataType = GetSqliteFieldType(mssqlField.ColType);
+                    sqliteField.IsPrimaryKey = mssqlField.IsPrimaryKey;
 
                     sqliteTable.FieldList.Add(sqliteField);
                 }
@@ -50,81 +64,20 @@ namespace ToSqLite
             return returnValue;
         }
 
-        private static List<Table> GetTableList(string mssqlConnString)
+        private static string GetSqliteFieldType(string mssqlFieldType)
         {
-            List<Table> tableList = null;
-
-            var reader = new MssqlReader();
-
-            using (var sqlConn = new SqlConnection(mssqlConnString))
+            switch (mssqlFieldType)
             {
-                sqlConn.Open();
-
-                var tableEntityList = reader.GetTables(sqlConn);
-                if (tableEntityList != null && tableEntityList.Count > 0)
-                {
-                    tableList = ToModel(tableEntityList);
-                }
+                case "int":
+                case "bigint":
+                    return "INT";
+                case "nvarchar":
+                    return "VARCHAR";
+                case "datetime":
+                    return "DATETIME";
+                default:
+                    return "ERROR_FIELD_TYPE";
             }
-
-            if (tableList != null && tableList.Count > 0)
-            {
-                foreach (var table in tableList)
-                {
-                    using (var sqlConn = new SqlConnection(mssqlConnString))
-                    {
-                        sqlConn.Open();
-
-                        var fieldEntityList = reader.GetSchema(table.Name, sqlConn);
-                        if (fieldEntityList != null && fieldEntityList.Count > 0)
-                        {
-                            table.FieldList = ToModel(fieldEntityList);
-                        }
-                    }
-                }
-            }
-
-            return tableList;
-        }
-
-        private static List<Table> ToModel(List<TableEntity> tableEntityList)
-        {
-            List<Table> returnValue = new List<Table>();
-
-            foreach (var tableEntity in tableEntityList)
-            {
-                Table table = new Table();
-
-                table.Name = tableEntity.Name;
-
-                returnValue.Add(table);
-            }
-
-            return returnValue;
-        }
-
-        private static List<Field> ToModel(List<FieldEntity> fieldEntityList)
-        {
-            List<Field> returnValue = new List<Field>();
-
-            foreach (var fieldEntity in fieldEntityList)
-            {
-                Field field = new Field();
-
-                field.ColOrder = fieldEntity.ColOrder;
-                field.Name = fieldEntity.Name;
-                field.IsIdentity = fieldEntity.IsIdentity;
-                field.IsPrimaryKey = fieldEntity.IsPrimaryKey;
-                field.ColType = fieldEntity.ColType;
-                field.ColBytes = fieldEntity.ColBytes;
-                field.ColLength = fieldEntity.ColLength;
-                field.IsNullable = fieldEntity.IsNullable;
-                field.DefaultValue = fieldEntity.DefaultValue;
-
-                returnValue.Add(field);
-            }
-
-            return returnValue;
         }
     }
 }
