@@ -17,67 +17,30 @@ namespace ToSqLite
         {
             List<Table> tableList = MssqlAdapter.GetTableList();
 
-            List<SqliteTable> sqliteTableList = ToSqlite(tableList);
-            if (sqliteTableList != null && sqliteTableList.Count > 0)
+            List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(tableList);
+            if (sqliteTableList == null || sqliteTableList.Count == 0)
             {
-                foreach (var sqliteTable in sqliteTableList)
-                {
-                    var template = new CreateSqliteTableTemplate();
-                    template.SqliteTable = sqliteTable;
-
-                    var content = template.TransformText();
-
-                    System.Diagnostics.Debug.WriteLine(content);
-
-                    using (var sqliteConn = ConnectionProvider.GetSqliteConn())
-                    {
-                        SqliteExecutor.Execute(content, sqliteConn);
-                    }
-                }
-            }
-        }
-
-        private static List<SqliteTable> ToSqlite(List<Table> tableList)
-        {
-            List<SqliteTable> returnValue = new List<SqliteTable>();
-
-            foreach (var mssqlTable in tableList)
-            {
-                SqliteTable sqliteTable = new SqliteTable();
-
-                sqliteTable.Name = mssqlTable.Name;
-                sqliteTable.FieldList = new List<SqLiteField>();
-                foreach (var mssqlField in mssqlTable.FieldList)
-                {
-                    SqLiteField sqliteField = new SqLiteField();
-
-                    sqliteField.Name = mssqlField.Name;
-                    sqliteField.DataType = GetSqliteFieldType(mssqlField.ColType);
-                    sqliteField.IsPrimaryKey = mssqlField.IsPrimaryKey;
-                    sqliteField.IsIdentity = mssqlField.IsIdentity;
-
-                    sqliteTable.FieldList.Add(sqliteField);
-                }
-
-                returnValue.Add(sqliteTable);
+                return;
             }
 
-            return returnValue;
+            CreateSqliteTable(sqliteTableList);
         }
 
-        private static string GetSqliteFieldType(string mssqlFieldType)
+        private static void CreateSqliteTable(List<SqliteTable> sqliteTableList)
         {
-            switch (mssqlFieldType)
+            foreach (var sqliteTable in sqliteTableList)
             {
-                case "int":
-                case "bigint":
-                    return "INTEGER";
-                case "nvarchar":
-                    return "VARCHAR";
-                case "datetime":
-                    return "DATETIME";
-                default:
-                    return "ERROR_FIELD_TYPE";
+                var template = new CreateSqliteTableTemplate();
+                template.SqliteTable = sqliteTable;
+
+                var content = template.TransformText();
+
+                System.Diagnostics.Debug.WriteLine(content);
+
+                using (var sqliteConn = ConnectionProvider.GetSqliteConn())
+                {
+                    SqliteExecutor.Execute(content, sqliteConn);
+                }
             }
         }
     }
