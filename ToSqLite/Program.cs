@@ -16,7 +16,7 @@ namespace ToSqLite
         {
             MssqlSchemaReader reader = new MssqlSchemaReader();
 
-            List<Table> tableList = reader.GetTableList();
+            List<MssqlTable> tableList = reader.GetTableList();
 
             List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(tableList);
             if (sqliteTableList == null || sqliteTableList.Count == 0)

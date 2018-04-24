@@ -11,9 +11,9 @@ namespace ToSqLite.Mssql
 {
     public class MssqlSchemaReader
     {
-        public List<Table> GetTableList()
+        public List<MssqlTable> GetTableList()
         {
-            List<Table> tableList = null;
+            List<MssqlTable> tableList = null;
 
             using (var sqlConn = ConnectionProvider.GetMssqlConn())
             {
@@ -70,9 +70,9 @@ namespace ToSqLite.Mssql
             return sqlConn.QuerySingleOrDefault<string>(SQL_SELECT_PRIMARY_KEY, new { TableName = tableName });
         }
 
-        private static List<Table> ToModel(List<TableEntity> tableEntityList)
+        private static List<MssqlTable> ToModel(List<TableEntity> tableEntityList)
         {
-            List<Table> returnValue = new List<Table>();
+            List<MssqlTable> returnValue = new List<MssqlTable>();
 
             foreach (var tableEntity in tableEntityList)
             {
@@ -81,7 +81,7 @@ namespace ToSqLite.Mssql
                     continue;
                 }
 
-                Table table = new Table();
+                MssqlTable table = new MssqlTable();
 
                 table.Name = tableEntity.Name;
 
@@ -92,13 +92,13 @@ namespace ToSqLite.Mssql
         }
 
 
-        private static List<Field> ToModel(List<FieldEntity> fieldEntityList)
+        private static List<MssqlField> ToModel(List<FieldEntity> fieldEntityList)
         {
-            List<Field> returnValue = new List<Field>();
+            List<MssqlField> returnValue = new List<MssqlField>();
 
             foreach (var fieldEntity in fieldEntityList)
             {
-                Field field = new Field();
+                MssqlField field = new MssqlField();
 
                 field.ColOrder = fieldEntity.ColOrder;
                 field.Name = fieldEntity.Name;

@@ -10,7 +10,7 @@ namespace ToSqLite
 {
     class DBBridge
     {
-        public static List<SqliteTable> ToSqlite(List<Table> tableList)
+        public static List<SqliteTable> ToSqlite(List<MssqlTable> tableList)
         {
             List<SqliteTable> returnValue = new List<SqliteTable>();
 

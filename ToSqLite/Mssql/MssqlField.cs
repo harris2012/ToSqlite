@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToSqLite.Mssql
 {
-    public class Field
+    public class MssqlField
     {
         /// <summary>
         /// smallint

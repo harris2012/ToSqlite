@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ToSqLite.Mssql
 {
-    public class Table
+    public class MssqlTable
     {
         public string Name { get; set; }
 
-        public List<Field> FieldList { get; set; }
+        public List<MssqlField> FieldList { get; set; }
     }
 }
