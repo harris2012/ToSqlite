@@ -16,15 +16,24 @@ namespace ToSqLite
         {
             MssqlSchemaReader reader = new MssqlSchemaReader();
 
-            List<MssqlTable> tableList = reader.GetTableList();
+            List<MssqlTable> mssqlTableList = reader.GetTableList();
 
-            List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(tableList);
+            List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(mssqlTableList);
             if (sqliteTableList == null || sqliteTableList.Count == 0)
             {
                 return;
             }
 
-            CreateSqliteTable(sqliteTableList);
+            foreach (var mssqlTable in mssqlTableList)
+            {
+                SelectMssqlDataTemplate template = new SelectMssqlDataTemplate();
+                template.MssqlTable = mssqlTable;
+                var sql = template.TransformText();
+
+                System.Diagnostics.Debug.WriteLine(sql);
+            }
+
+            //CreateSqliteTable(sqliteTableList);
         }
 
         private static void CreateSqliteTable(List<SqliteTable> sqliteTableList)

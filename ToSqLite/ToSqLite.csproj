@@ -70,6 +70,12 @@
       <DependentUpon>CreateSqliteTableTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Template\CreateSqliteTableTemplatePartial.cs" />
+    <Compile Include="Template\SelectMssqlDataTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SelectMssqlDataTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\SelectMssqlDataTemplatePartial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -79,6 +85,10 @@
     <Content Include="Template\CreateSqliteTableTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CreateSqliteTableTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Template\SelectMssqlDataTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SelectMssqlDataTemplate.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
