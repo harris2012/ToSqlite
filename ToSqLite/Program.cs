@@ -14,26 +14,40 @@ namespace ToSqLite
     {
         static void Main(string[] args)
         {
-            MssqlSchemaReader reader = new MssqlSchemaReader();
+            MssqlSchemaReader mssqlSchemaReader = new MssqlSchemaReader();
+            MssqlDataReader mssqlDataReader = new MssqlDataReader();
+            SqliteDataWriter sqliteDataWriter = new SqliteDataWriter();
 
-            List<MssqlTable> mssqlTableList = reader.GetTableList();
+            List<MssqlTable> mssqlTableList = mssqlSchemaReader.GetTableList();
 
             List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(mssqlTableList);
-            if (sqliteTableList == null || sqliteTableList.Count == 0)
-            {
-                return;
-            }
+
+            //CreateSqliteTable(sqliteTableList);
 
             foreach (var mssqlTable in mssqlTableList)
             {
-                SelectMssqlDataTemplate template = new SelectMssqlDataTemplate();
-                template.MssqlTable = mssqlTable;
-                var sql = template.TransformText();
+                string mssqlSelectSql = null;
+                {
+                    SelectFromMssqlTemplate template = new SelectFromMssqlTemplate();
+                    template.MssqlTable = mssqlTable;
+                    mssqlSelectSql = template.TransformText();
 
-                System.Diagnostics.Debug.WriteLine(sql);
+                    System.Diagnostics.Debug.WriteLine(mssqlSelectSql);
+                }
+
+                string sqliteInsertSql = null;
+                {
+                    InsertToSqliteTemplate template = new InsertToSqliteTemplate();
+                    template.MssqlTable = mssqlTable;
+                    sqliteInsertSql = template.TransformText();
+
+                    System.Diagnostics.Debug.WriteLine(sqliteInsertSql);
+                }
+
+                List<dynamic> mssqlEntityList = mssqlDataReader.ReadEntityList(mssqlSelectSql, ConnectionProvider.GetMssqlConn());
+
+                sqliteDataWriter.WriteEntityList(sqliteInsertSql, mssqlEntityList, ConnectionProvider.GetSqliteConn());
             }
-
-            //CreateSqliteTable(sqliteTableList);
         }
 
         private static void CreateSqliteTable(List<SqliteTable> sqliteTableList)

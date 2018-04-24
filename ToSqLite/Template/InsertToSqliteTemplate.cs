@@ -19,9 +19,9 @@ namespace ToSqLite.Template
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\SelectMssqlDataTemplate.tt"
+    #line 1 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\InsertToSqliteTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class SelectMssqlDataTemplate : SelectMssqlDataTemplateBase
+    public partial class InsertToSqliteTemplate : InsertToSqliteTemplateBase
     {
 #line hidden
         /// <summary>
@@ -29,29 +29,40 @@ namespace ToSqLite.Template
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("SELECT ");
+            this.Write("INSERT INTO ");
             
-            #line 7 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\SelectMssqlDataTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", GetFieldList(this.MssqlTable.FieldList))));
-            
-            #line default
-            #line hidden
-            this.Write(" FROM ");
-            
-            #line 7 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\SelectMssqlDataTemplate.tt"
+            #line 7 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\InsertToSqliteTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.MssqlTable.Name));
             
             #line default
             #line hidden
-            this.Write(";\r\n");
+            this.Write(" (");
+            
+            #line 7 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\InsertToSqliteTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", GetFieldList(this.MssqlTable.FieldList))));
+            
+            #line default
+            #line hidden
+            this.Write(") VALUES (");
+            
+            #line 7 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\InsertToSqliteTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", GetFieldParamList(this.MssqlTable.FieldList))));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n");
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 8 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\SelectMssqlDataTemplate.tt"
+        #line 8 "D:\CodingWorkspace\ToSqLite\ToSqLite\Template\InsertToSqliteTemplate.tt"
 
     List<string> GetFieldList(List<MssqlField> mssqlFieldList)
     {
         return mssqlFieldList.Where(v => !v.IsIdentity).Select(v => v.Name).ToList();
+    }
+    List<string> GetFieldParamList(List<MssqlField> mssqlFieldList)
+    {
+        return mssqlFieldList.Where(v => !v.IsIdentity).Select(v => "@" + v.Name).ToList();
     }
 
         
@@ -66,7 +77,7 @@ namespace ToSqLite.Template
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class SelectMssqlDataTemplateBase
+    public class InsertToSqliteTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

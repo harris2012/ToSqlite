@@ -60,6 +60,7 @@
     <Compile Include="Mssql\MssqlTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sqlite\SqliteDataWriter.cs" />
     <Compile Include="Sqlite\SqliteExecutor.cs" />
     <Compile Include="Sqlite\SqLiteField.cs" />
     <Compile Include="Sqlite\SqliteReader.cs" />
@@ -70,12 +71,18 @@
       <DependentUpon>CreateSqliteTableTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Template\CreateSqliteTableTemplatePartial.cs" />
-    <Compile Include="Template\SelectMssqlDataTemplate.cs">
+    <Compile Include="Template\InsertToSqliteTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SelectMssqlDataTemplate.tt</DependentUpon>
+      <DependentUpon>InsertToSqliteTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Template\SelectMssqlDataTemplatePartial.cs" />
+    <Compile Include="Template\InsertToSqliteTemplatePartial.cs" />
+    <Compile Include="Template\SelectFromMssqlTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SelectFromMssqlTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\SelectFromMssqlTemplatePartial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,9 +93,13 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CreateSqliteTableTemplate.cs</LastGenOutput>
     </Content>
-    <Content Include="Template\SelectMssqlDataTemplate.tt">
+    <Content Include="Template\InsertToSqliteTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>SelectMssqlDataTemplate.cs</LastGenOutput>
+      <LastGenOutput>InsertToSqliteTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Template\SelectFromMssqlTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SelectFromMssqlTemplate.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

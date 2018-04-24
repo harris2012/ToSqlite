@@ -7,7 +7,7 @@ using ToSqLite.Mssql;
 
 namespace ToSqLite.Template
 {
-    partial class SelectMssqlDataTemplate
+    partial class InsertToSqliteTemplate
     {
         public MssqlTable MssqlTable { get; set; }
     }
