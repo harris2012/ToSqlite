@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToSqLite.Mssql;
-using ToSqLite.Mssql.Entity;
 using ToSqLite.Sqlite;
 using ToSqLite.Template;
 
@@ -15,7 +14,9 @@ namespace ToSqLite
     {
         static void Main(string[] args)
         {
-            List<Table> tableList = MssqlAdapter.GetTableList();
+            MssqlSchemaReader reader = new MssqlSchemaReader();
+
+            List<Table> tableList = reader.GetTableList();
 
             List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(tableList);
             if (sqliteTableList == null || sqliteTableList.Count == 0)

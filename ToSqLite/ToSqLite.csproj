@@ -54,10 +54,7 @@
   <ItemGroup>
     <Compile Include="ConnectionProvider.cs" />
     <Compile Include="DBBridge.cs" />
-    <Compile Include="Mssql\Entity\FieldEntity.cs" />
-    <Compile Include="Mssql\Entity\TableEntity.cs" />
     <Compile Include="Mssql\Field.cs" />
-    <Compile Include="Mssql\MssqlAdapter.cs" />
     <Compile Include="Mssql\MssqlDataReader.cs" />
     <Compile Include="Mssql\MssqlSchemaReader.cs" />
     <Compile Include="Mssql\Table.cs" />
