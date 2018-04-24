@@ -14,7 +14,7 @@ namespace ToSqLite.Mssql
         {
             List<Table> tableList = null;
 
-            var reader = new MssqlReader();
+            var reader = new MssqlSchemaReader();
 
             using (var sqlConn = ConnectionProvider.GetMssqlConn())
             {

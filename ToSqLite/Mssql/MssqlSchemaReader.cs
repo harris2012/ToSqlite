@@ -10,7 +10,7 @@ using ToSqLite.Mssql.Entity;
 
 namespace ToSqLite.Mssql
 {
-    public class MssqlReader
+    public class MssqlSchemaReader
     {
         /// <summary>
         /// 查询单张表结构
