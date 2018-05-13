@@ -22,7 +22,7 @@ namespace ToSqLite
 
             List<SqliteTable> sqliteTableList = DBBridge.ToSqlite(mssqlTableList);
 
-            //CreateSqliteTable(sqliteTableList);
+            CreateSqliteTable(sqliteTableList);
 
             foreach (var mssqlTable in mssqlTableList)
             {
